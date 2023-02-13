@@ -34,6 +34,10 @@ const productSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
+  Quantity: {
+    type: Number,
+    default: 0,
+  },
   company: {
     type: String,
     enum: {

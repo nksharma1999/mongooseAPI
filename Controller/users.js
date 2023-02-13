@@ -91,3 +91,64 @@ export const loginUser = async (req, res) => {
     res.status(401).json("Enter username / password");
   }
 };
+
+export const addProduct = async (req, res) => {
+  console.log(req.result);
+  if (req.result.isAdmin) {
+    const allData = req.body;
+    const newProduct = new Product({
+      name: allData.name,
+      price: allData.price,
+      featured: allData.featured,
+      rating: allData.rating,
+      company: allData.company,
+    });
+    try {
+      await newProduct.save();
+      res.status(200).json("Product Save");
+    } catch (Error) {
+      res.status(401).json("Data not Save" + Error);
+    }
+  } else {
+    res.status(401).json("You can not add product! you are not admin");
+  }
+};
+
+export const updateProduct = (req, res) => {
+  if (req.result.isAdmin) {
+    Product.findByIdAndUpdate(req.params.id, req.body, function (err, doc) {
+      if (err) {
+        return res.status(401).json("Data not updated!");
+      }
+      res.status(200).json("Data updated!");
+    });
+  } else {
+    res.status(401).json("You can not update the data,you are not admin");
+  }
+};
+
+export const mongooseQuery = (req, res) => {
+  try {
+    // Product.updateOne(
+    //   { name: "samsung A53" },
+    //   { $set: { price: 232, rating: 4.5 } },
+    //   (err, docs) => {
+    //     if (err) {
+    //       console.log(err);
+    //     } else {
+    //       console.log("Updated Docs : ", docs);
+    //     }
+    //   }
+    // );
+    // Product.updateMany({}, { $set: { Quantity: 5 } }, (err, doc) => {
+    //   if (err) {
+    //     console.log(err);
+    //   } else {
+    //     console.log("Updated Docs : ", doc);
+    //   }
+    // });
+  } catch (error) {
+    console.log(error);
+  }
+  res.send("Hello");
+};
